@@ -21,8 +21,8 @@
 {% endblock %}
 
 {% block group_content %}
-    <div class="col-md-8">
-        <div class="list-group">
+    <div class="col-md-8" style="overflow-y:auto; height:500px " >
+        <div>
             {% for group in object_list %}
                 <a class="list-group-item" href="{% url 'groups:single' slug=group.slug %}">
                     <h3 class="title list-group-item-heading">{{ group.name }}</h3>

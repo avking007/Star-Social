@@ -3,8 +3,8 @@ from django.urls import reverse
 from django.db import models
 from django.utils.text import slugify
 # from accounts.models import User
-
 import misaka
+# from django.contrib.auth.models import AbstractUser
 
 from django.contrib.auth import get_user_model
 
@@ -21,6 +21,7 @@ class Group(models.Model):
     description = models.TextField(blank=True, default='')
     description_html = models.TextField(editable=False, default='', blank=True)
     members = models.ManyToManyField(User, through="GroupMember")
+    creator = models.OneToOneField(User,on_delete=models.CASCADE,related_name='owner',default='',null=True,blank=True)
 
     def __str__(self):
         return self.name
