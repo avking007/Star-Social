@@ -21,7 +21,7 @@ class Group(models.Model):
     description = models.TextField(blank=True, default='')
     description_html = models.TextField(editable=False, default='', blank=True)
     members = models.ManyToManyField(User, through="GroupMember")
-    creator = models.OneToOneField(User,on_delete=models.CASCADE,related_name='owner',default='',null=True,blank=True)
+    creator = models.IntegerField()
 
     def __str__(self):
         return self.name
@@ -29,6 +29,10 @@ class Group(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         self.description_html = misaka.html(self.description)
+        for arg in args:
+            username=arg
+            self.creator =username
+        print(self.creator)
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):

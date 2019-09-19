@@ -18,9 +18,10 @@ class CreateGroup(LoginRequiredMixin, generic.CreateView):
     model = Group
 
     def form_valid(self, form):
+
         self.object = form.save(commit=False)
-        self.object.creator = self.request.user
-        self.object.save()
+        us = self.request.user.id
+        self.object.save(us)
         return super().form_valid(form)
 
 
