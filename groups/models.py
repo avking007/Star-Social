@@ -1,16 +1,13 @@
+from django import template
 from django.conf import settings
 from django.urls import reverse
 from django.db import models
 from django.utils.text import slugify
-# from accounts.models import User
-import misaka
-# from django.contrib.auth.models import AbstractUser
-
 from django.contrib.auth import get_user_model
+import misaka
 
 User = get_user_model()
 
-from django import template
 
 register = template.Library()
 
@@ -30,8 +27,8 @@ class Group(models.Model):
         self.slug = slugify(self.name)
         self.description_html = misaka.html(self.description)
         for arg in args:
-            username=arg
-            self.creator =username
+            username = arg
+            self.creator = username
         print(self.creator)
         super().save(*args, **kwargs)
 
@@ -43,11 +40,15 @@ class Group(models.Model):
 
 
 class GroupMember(models.Model):
-    group = models.ForeignKey(Group, related_name="membership", on_delete=models.CASCADE)
-    user = models.ForeignKey(User, related_name='user_groups', on_delete=models.CASCADE)
+    group = models.ForeignKey(
+        Group, related_name="membership", on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, related_name='user_groups', on_delete=models.CASCADE)
 
     def __str__(self):
         return User.username
 
     class Meta:
         unique_together = ("group", "user")
+
+    objects = models.Manager()

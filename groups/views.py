@@ -4,8 +4,7 @@ from django.contrib.auth.mixins import (
     PermissionRequiredMixin
 )
 from braces.views import SelectRelatedMixin
-
-from django.urls import reverse,reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from django.views import generic
@@ -45,10 +44,12 @@ class JoinGroup(LoginRequiredMixin, generic.RedirectView):
             GroupMember.objects.create(user=self.request.user, group=group)
 
         except IntegrityError:
-            messages.warning(self.request, ("Warning, already a member of {}".format(group.name)))
+            messages.warning(
+                self.request, ("Warning, already a member of {}".format(group.name)))
 
         else:
-            messages.success(self.request, "You are now a member of the {} group.".format(group.name))
+            messages.success(
+                self.request, "You are now a member of the {} group.".format(group.name))
 
         return super().get(request, *args, **kwargs)
 
@@ -67,7 +68,7 @@ class LeaveGroup(LoginRequiredMixin, generic.RedirectView):
                 group__slug=self.kwargs.get("slug")
             ).get()
 
-        except models.GroupMember.DoesNotExist:
+        except:
             messages.warning(
                 self.request,
                 "You can't leave this group because you aren't in it."
